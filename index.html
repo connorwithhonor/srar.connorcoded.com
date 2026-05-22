@@ -1,1 +1,939 @@
-{"id":"/index.html","path":"/index.html","sha":"8d2d2c292882096318ed8ff6f1a36b9a598144d5","mime_type":"text/html","size":52364,"site_id":"6032ea97-2513-4e3d-a9c5-ff96b63faa07","deploy_id":"69bc8f1ca933f100f79aeba5"}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Does AI Make Real Estate Agents More Productive? | Connor MacIvor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --black: #0a0a0a;
+    --deep: #111214;
+    --card: #161819;
+    --border: #2a2c2e;
+    --cyan: #00e5ff;
+    --gold: #f5c842;
+    --red: #ff3b3b;
+    --white: #f0f0f0;
+    --muted: #888;
+    --dim: #555;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--cyan); overflow: hidden; height: 28px;
+  }
+  .ticker {
+    display: inline-flex; gap: 0; white-space: nowrap;
+    animation: ticker 35s linear infinite;
+  }
+  .ticker span {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: #000; padding: 5px 32px;
+  }
+  .ticker span::after { content: "◆"; margin-left: 32px; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 28px; left: 0; right: 0; z-index: 99;
+    background: rgba(10,10,10,.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 52px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px;
+    letter-spacing: .15em; color: var(--white); text-decoration: none;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links {
+    display: flex; gap: 4px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    padding: 4px 10px; border-radius: 2px;
+    transition: color .2s, background .2s;
+  }
+  .nav-links a:hover { color: var(--cyan); background: rgba(0,229,255,.06); }
+
+  /* ── NOTES TOGGLE ── */
+  .notes-toggle {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); background: none;
+    border: 1px solid var(--border); padding: 5px 14px; border-radius: 2px;
+    cursor: pointer; transition: all .2s;
+  }
+  .notes-toggle:hover { color: var(--gold); border-color: var(--gold); }
+  .notes-toggle.active { color: var(--gold); border-color: var(--gold); background: rgba(245,200,66,.06); }
+
+  /* ── NOTES PANEL ── */
+  .notes-panel {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 98;
+    background: #0d0f10; border-top: 1px solid var(--border);
+    padding: 14px 32px 18px; transform: translateY(100%);
+    transition: transform .3s ease; max-height: 200px; overflow-y: auto;
+  }
+  .notes-panel.visible { transform: translateY(0); }
+  .notes-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 6px;
+  }
+  .notes-text { font-size: 13px; color: #bbb; line-height: 1.7; }
+
+  /* ── SECTIONS ── */
+  section {
+    min-height: 100vh; padding: 140px 80px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  section:nth-child(even) { background: var(--deep); }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-tag::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--cyan);
+  }
+  .section-num {
+    position: absolute; right: 80px; bottom: 80px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 120px; line-height: 1;
+    color: rgba(255,255,255,.03); letter-spacing: .05em; pointer-events: none;
+    user-select: none;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 88px);
+    line-height: 1; letter-spacing: .04em; color: var(--white); margin-bottom: 24px;
+  }
+  h1 em { color: var(--cyan); font-style: normal; }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05; letter-spacing: .04em; color: var(--white); margin-bottom: 20px;
+  }
+  h3 {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(22px, 3vw, 32px);
+    letter-spacing: .06em; color: var(--white); margin-bottom: 10px;
+  }
+  p { font-size: 16px; color: #bbb; max-width: 680px; margin-bottom: 16px; line-height: 1.75; }
+  p strong { color: var(--white); font-weight: 500; }
+
+  /* ── HERO ── */
+  #hero { background: var(--black); }
+  .hero-sub {
+    font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .1em;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 32px;
+  }
+  .hero-badges {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; padding: 7px 16px;
+    border: 1px solid var(--border); border-radius: 2px; color: var(--muted);
+  }
+  .badge.cyan { border-color: var(--cyan); color: var(--cyan); }
+  .badge.gold { border-color: var(--gold); color: var(--gold); }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,229,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .card {
+    background: var(--card); padding: 32px 28px; position: relative;
+  }
+  .card-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 1;
+    color: rgba(0,229,255,.15); margin-bottom: 12px; display: block;
+  }
+  .card h3 { font-size: 18px; margin-bottom: 10px; }
+  .card p { font-size: 14px; color: #999; margin: 0; max-width: 100%; }
+  .card .tag {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 6px; display: block;
+  }
+
+  /* ── WARNING CARDS ── */
+  .warn-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 36px; }
+  .warn-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--red); padding: 24px;
+  }
+  .warn-card h3 { font-size: 16px; color: var(--white); margin-bottom: 8px; }
+  .warn-card p { font-size: 14px; color: #999; margin: 0; max-width: 100%; }
+  .warn-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+
+  /* ── GOOD CARDS ── */
+  .good-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 36px; }
+  .good-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan); padding: 24px;
+  }
+  .good-card h3 { font-size: 16px; color: var(--white); margin-bottom: 8px; }
+  .good-card p { font-size: 14px; color: #999; margin: 0; max-width: 100%; }
+  .good-icon { font-size: 20px; margin-bottom: 10px; display: block; color: var(--cyan); }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-top: 40px; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 80px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .tl-item {
+    display: grid; grid-template-columns: 80px 1fr; gap: 32px;
+    margin-bottom: 36px; align-items: start;
+  }
+  .tl-time {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em;
+    color: var(--cyan); text-align: right; padding-top: 2px; position: relative;
+  }
+  .tl-time::after {
+    content: ''; position: absolute; right: -18px; top: 7px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
+  }
+  .tl-body { padding-left: 16px; }
+  .tl-body h3 { font-size: 15px; margin-bottom: 6px; }
+  .tl-body p { font-size: 13px; color: #888; margin: 0; max-width: 100%; }
+  .tl-chip {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: .12em; text-transform: uppercase; color: #000;
+    background: var(--cyan); padding: 3px 10px; margin-top: 8px; border-radius: 1px;
+  }
+
+  /* ── STEPS ── */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 36px; }
+  .step { background: var(--card); padding: 32px 24px; }
+  .step-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: block;
+  }
+  .step h3 { font-size: 18px; margin-bottom: 10px; }
+  .step p { font-size: 13px; color: #888; margin: 0; max-width: 100%; }
+  .step-time {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); padding: 4px 10px; margin-top: 14px; border-radius: 1px;
+  }
+
+  /* ── DEMO BLOCK ── */
+  .demo-block {
+    background: var(--card); border: 1px solid var(--border);
+    border-top: 2px solid var(--gold); padding: 32px; margin-top: 36px;
+  }
+  .demo-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: block;
+  }
+  .demo-prompt {
+    font-family: 'DM Mono', monospace; font-size: 13px; color: #ccc;
+    background: #0d0f10; border: 1px solid #2a2c2e; padding: 16px 20px;
+    border-radius: 2px; margin-bottom: 12px; line-height: 1.7;
+  }
+  .demo-prompt span { color: var(--cyan); }
+
+  /* ── QUIZ BLOCK ── */
+  .quiz-block {
+    background: var(--card); border: 1px solid var(--border);
+    border-top: 2px solid var(--cyan); padding: 32px; margin-top: 36px;
+  }
+  .quiz-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 16px; display: block;
+  }
+  .quiz-q { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 14px; }
+  .quiz-opts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .quiz-opt {
+    font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em;
+    border: 1px solid var(--border); color: var(--muted); padding: 8px 18px;
+    border-radius: 2px; cursor: pointer; transition: all .2s;
+  }
+  .quiz-opt:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,.05); }
+  .quiz-opt.selected { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,.08); }
+
+  /* ── STAT ROW ── */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 36px; }
+  .stat-cell { background: var(--card); flex: 1; min-width: 160px; padding: 28px 24px; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1;
+    color: var(--cyan); display: block; margin-bottom: 4px;
+  }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── TOOL TABLE ── */
+  .tool-table { width: 100%; border-collapse: collapse; margin-top: 32px; font-size: 14px; }
+  .tool-table th {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted); text-align: left;
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+  }
+  .tool-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.04); color: #bbb; vertical-align: top; }
+  .tool-table tr:hover td { background: rgba(255,255,255,.02); }
+  .tool-badge {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px;
+    border-radius: 1px;
+  }
+  .tool-badge.free { background: rgba(0,229,255,.12); color: var(--cyan); }
+  .tool-badge.paid { background: rgba(245,200,66,.12); color: var(--gold); }
+
+  /* ── CLOSE ── */
+  #close { background: var(--black); }
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 36px; }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border); padding: 24px;
+  }
+  .contact-card .label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px; display: block;
+  }
+  .contact-card a, .contact-card span {
+    font-size: 14px; color: var(--white); text-decoration: none;
+    transition: color .2s;
+  }
+  .contact-card a:hover { color: var(--cyan); }
+  .footer-byline {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .footer-byline a { color: var(--dim); text-decoration: none; }
+  .footer-byline a:hover { color: var(--cyan); }
+
+  /* ── DIVIDER ── */
+  .divider { width: 48px; height: 2px; background: var(--cyan); margin: 20px 0 32px; }
+
+  /* ── SCROLL FADE ── */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    section { padding: 120px 24px 60px; }
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .timeline::before { left: 60px; }
+    .tl-item { grid-template-columns: 60px 1fr; gap: 20px; }
+  }
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png"><meta property="og:image" content="https://srar.connorcoded.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://srar.connorcoded.com/og-image.png"></head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>Does AI Make Real Estate Agents More Productive</span>
+    <span>ConnorWithHonor.com</span>
+    <span>661-400-1720</span>
+    <span>HonorElevate.com</span>
+    <span>Board of Realtors Presentation</span>
+    <span>AI Growth Architect</span>
+    <span>50-Minute Class</span>
+    <span>Does AI Make Real Estate Agents More Productive</span>
+    <span>ConnorWithHonor.com</span>
+    <span>661-400-1720</span>
+    <span>HonorElevate.com</span>
+    <span>Board of Realtors Presentation</span>
+    <span>AI Growth Architect</span>
+    <span>50-Minute Class</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Connor<span>With</span>Honor</a>
+  <ul class="nav-links">
+    <li><a href="#hero">01 Intro</a></li>
+    <li><a href="#landscape">02 Landscape</a></li>
+    <li><a href="#answer">03 Answer</a></li>
+    <li><a href="#five-ways">04 5 Ways</a></li>
+    <li><a href="#tools">05 Tools</a></li>
+    <li><a href="#demo">06 Live Demo</a></li>
+    <li><a href="#warning">07 Pitfalls</a></li>
+    <li><a href="#good">08 Best Practices</a></li>
+    <li><a href="#example">09 Day-In-Life</a></li>
+    <li><a href="#start">10 Action Plan</a></li>
+    <li><a href="#qa">11 Q&A</a></li>
+    <li><a href="#close">12 Connect</a></li>
+  </ul>
+  <button class="notes-toggle" id="notesToggle">NOTES ◆ OFF</button>
+</nav>
+
+<!-- NOTES PANEL -->
+<div class="notes-panel" id="notesPanel">
+  <div class="notes-label">◆ SPEAKER NOTES — CURRENT SLIDE</div>
+  <div class="notes-text" id="notesText">Scroll to a section to see your speaking notes.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 01 HERO -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="hero"
+  data-notes="[0:00–3:00] Welcome the room. Don't read your resume — they'll feel it. 'You know who I am or you wouldn't be in the room.' Quick credibility: LAPD 23 years, 27 in SCV real estate, and I've been studying AI since most people thought it was still science fiction. The question on the screen is the only question that matters today. Everything else is noise. Tell them: 50 minutes. No theory. No product pitch. Just the truth about what AI does, what it doesn't do, and exactly how to start — today.">
+  <div class="hero-grid"></div>
+  <div class="section-tag">01 / 12 · Board of Realtors Class</div>
+  <h1>Does AI Make Real<br>Estate Agents <em>More</em><br>Productive?</h1>
+  <p class="hero-sub">A 50-minute honest briefing · What works, what doesn't, how to start</p>
+  <div class="divider"></div>
+  <p>No hype. No fluff. No products you don't need. Just the straight answer — with examples you can use before you leave this room.</p>
+  <div class="hero-badges">
+    <span class="badge">27 Yrs Santa Clarita Real Estate</span>
+    <span class="badge">23 Yrs LAPD</span>
+    <span class="badge cyan">AI Growth Architect</span>
+    <span class="badge gold">HonorElevate.com</span>
+    <span class="badge">CA DRE #01238257</span>
+  </div>
+  <div class="section-num">01</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 02 LANDSCAPE -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="landscape"
+  data-notes="[3:00–8:00] Set the context. AI isn't new — but the speed of adoption in real estate is accelerating right now, 2025-2026. This is the moment. Walk through the stats. Ask the room: 'How many of you have used ChatGPT at least once?' Count hands. 'How many use it weekly?' Then: 'The gap between those two numbers is your opportunity.' The agents who master this in the next 6 months will have an unfair advantage for the next 5 years. Use your LAPD analogy: 'When we got MDTs — mobile data terminals — in the patrol cars in the 90s, some officers refused to learn them. They were still writing paper reports when everyone else was running plates in 30 seconds. Don't be that officer.'">
+  <div class="section-tag fade-in">02 / 12 · The Landscape</div>
+  <h2 class="fade-in">Where We Are <br>Right Now</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">AI adoption in real estate has crossed the tipping point. This isn't a trend to watch — it's a shift already happening. The agents building habits right now are building a competitive lead that compounds.</p>
+
+  <div class="stat-row fade-in">
+    <div class="stat-cell">
+      <span class="stat-num">73%</span>
+      <span class="stat-label">of agents say admin work reduces selling time</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">2.5hrs</span>
+      <span class="stat-label">Average daily time lost to tasks AI can handle</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">500+</span>
+      <span class="stat-label">AI tools now marketed directly to real estate agents</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">12mo</span>
+      <span class="stat-label">The window before early adopters lock in their advantage</span>
+    </div>
+  </div>
+
+  <div class="quiz-block fade-in" style="margin-top:36px;">
+    <span class="quiz-label">◆ Audience Check-In — Show of Hands</span>
+    <div class="quiz-q">Which of these have you used in the last 30 days?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt">ChatGPT</div>
+      <div class="quiz-opt">Claude (Anthropic)</div>
+      <div class="quiz-opt">AI in my MLS/CRM</div>
+      <div class="quiz-opt">None yet</div>
+    </div>
+  </div>
+  <div class="section-num">02</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 03 ANSWER -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="answer"
+  data-notes="[8:00–13:00] Land the core thesis hard. 'Yes. But only if you use it right.' Pause. Let it land. AI does not make a bad agent great. It makes a good agent harder to beat. Spend time on the 50/50 split — this resonates with everyone in the room. Ask: 'What percentage of your week is doing work that doesn't require your license, your relationships, or your judgment?' That's the 50%. That's where AI lives. The goal isn't to automate your personality — it's to free your personality up to do the work only YOU can do.">
+  <div class="section-tag fade-in">03 / 12 · The Honest Answer</div>
+  <h2 class="fade-in">Yes. But Only If<br>You Use It Right.</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">AI doesn't replace the things that make a great agent great — <strong>relationships, judgment, trust, and local knowledge.</strong> What it does is eliminate the friction between you and the work that actually matters.</p>
+  <p class="fade-in">You became an agent to help people make one of the biggest decisions of their lives. But somewhere along the way, the job became <strong>50% paperwork, follow-up, and repetition.</strong> AI takes the 50% that doesn't require you — so you can spend 100% of your energy on the part only you can do.</p>
+
+  <div class="cards fade-in" style="grid-template-columns: 1fr 1fr; margin-top:36px;">
+    <div class="card" style="border-top: 2px solid var(--red);">
+      <span class="tag">What AI Cannot Replace</span>
+      <h3>The Human 50%</h3>
+      <p>Your relationships. Your local knowledge. Your judgment on a repair request. The moment you read a room and know the deal is going sideways. AI has no idea how to do that. You do.</p>
+    </div>
+    <div class="card" style="border-top: 2px solid var(--cyan);">
+      <span class="tag">What AI Takes Off Your Plate</span>
+      <h3>The Admin 50%</h3>
+      <p>Writing the listing description at 10pm. Drafting the follow-up email for the third time. Answering the same FAQ for every buyer. Formatting the CMA. Scheduling the showing. That 50% is AI's domain.</p>
+    </div>
+  </div>
+  <div class="section-num">03</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 04 FIVE WAYS -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="five-ways"
+  data-notes="[13:00–22:00] The core curriculum block. Spend about 90 seconds per card. Use real examples for each one. Card 01 — LAPD analogy: 'I worked patrol at 2am. The call still came in. The difference was I was there to take it. Your AI voice assistant is that — it's always on shift.' Card 02 — Follow-up: 'Most agents lose deals because life happened. AI doesn't have life happening to it.' Card 03 — Content: Ask the room how long it takes them to write a listing description. Then tell them it takes you 4 minutes. Card 04 — Research: Walk through a CMA scenario. Card 05 — Database: 'You have gold in your phone right now that you haven't called in 2 years. AI can fix that.'">
+  <div class="section-tag fade-in">04 / 12 · Core Curriculum</div>
+  <h2 class="fade-in">5 Ways AI Makes<br>Agents More Productive</h2>
+  <div class="divider fade-in"></div>
+
+  <div class="cards fade-in">
+    <div class="card">
+      <span class="card-num">01</span>
+      <span class="tag">Lead Capture</span>
+      <h3>Never Miss a Lead Again</h3>
+      <p>An AI voice assistant answers your phone at 2am on Sunday when you're at your kid's game. It captures the lead, asks the right questions, and books them on your calendar. A receptionist who never sleeps, never has a bad day, and never calls in sick.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">02</span>
+      <span class="tag">Follow-Up</span>
+      <h3>Follow-Up That Actually Happens</h3>
+      <p>Most agents lose deals not because they weren't good enough — because they forgot to follow up. AI sends the right message, at the right time, to every lead in your pipeline. Automatically. Without you having to remember.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">03</span>
+      <span class="tag">Content</span>
+      <h3>Content in Minutes, Not Hours</h3>
+      <p>Listing descriptions, market updates, neighborhood posts, email newsletters — AI drafts all of it in your voice, in minutes instead of hours. You review, tweak, post. A copywriter on call who already knows your market and your style.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">04</span>
+      <span class="tag">Research</span>
+      <h3>Market Intel in 5 Minutes</h3>
+      <p>Pull comps, analyze trends, prep CMAs, research neighborhoods — tasks that used to take an hour now take five minutes with the right AI tools working alongside your MLS data. A junior analyst who reads everything before you ask.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">05</span>
+      <span class="tag">Database</span>
+      <h3>Your Database Actually Works</h3>
+      <p>Most agents have a database full of gold they never contact. AI segments past clients, triggers automated check-ins, sends market updates, and surfaces who's most likely to transact next. Your CRM finally doing its job without you babysitting it.</p>
+    </div>
+  </div>
+  <div class="section-num">04</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 05 TOOLS -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="tools"
+  data-notes="[22:00–28:00] New section for the 50-min build. Walk through the actual tools available right now. Don't overwhelm — focus on the three categories: content, voice, and CRM automation. Emphasize: don't buy everything. Pick your biggest pain point and start there. If they ask about specific tools, be honest about what you've tested vs. what you know by reputation. For ChatGPT — do a live demo here if the room has connectivity. Type a prompt on screen and let them watch the output happen in real time. That 90-second moment is worth 10 minutes of slides.">
+  <div class="section-tag fade-in">05 / 12 · Tools Overview</div>
+  <h2 class="fade-in">The Actual Tools<br>Agents Use Right Now</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">500+ AI tools are marketed to real estate agents. Most of them overlap. Here's what actually matters — organized by what problem it solves.</p>
+
+  <table class="tool-table fade-in">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Tool / Platform</th>
+        <th>What It Solves</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong style="color:var(--white)">Content Writing</strong></td>
+        <td>ChatGPT / Claude</td>
+        <td>Listing descriptions, emails, social posts, market updates, scripts</td>
+        <td><span class="tool-badge free">Free / $20/mo</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--white)">Voice / Lead Capture</strong></td>
+        <td>AI Voice Assistants (via CRM platforms)</td>
+        <td>After-hours call answering, lead qualification, calendar booking</td>
+        <td><span class="tool-badge paid">$200–500/mo</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--white)">CRM Automation</strong></td>
+        <td>GoHighLevel / KVCore / Follow Up Boss</td>
+        <td>Automated follow-up sequences, database segmentation, pipeline management</td>
+        <td><span class="tool-badge paid">$97–297/mo</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--white)">Image / Video</strong></td>
+        <td>Canva AI / Midjourney / CapCut</td>
+        <td>Listing graphics, social media visuals, short-form video editing</td>
+        <td><span class="tool-badge free">Free / $10–30/mo</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--white)">Market Research</strong></td>
+        <td>ChatGPT + MLS data / Perplexity</td>
+        <td>Neighborhood summaries, trend analysis, CMA narrative drafting</td>
+        <td><span class="tool-badge free">Free / $20/mo</span></td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--white)">Scheduling & Admin</strong></td>
+        <td>AI in Google / Outlook / Calendly</td>
+        <td>Smart scheduling, email drafting, meeting summaries</td>
+        <td><span class="tool-badge free">Free / included</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="section-num">05</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 06 LIVE DEMO -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="demo"
+  data-notes="[28:00–35:00] This is the highest-impact segment of the 50 minutes. If you have a laptop and screen connection — USE IT. Pull up ChatGPT live. Run prompt #1 on screen. Read the output out loud. Let the room react. Then run prompt #2. Ask someone in the audience: 'What would you change?' This makes it interactive and personal. If no screen available, read the prompts out loud and describe the output. Key message: 'This took 45 seconds. Writing that yourself would take 20 minutes. That's the math.' Every person in this room should leave having seen AI produce something real — not just talked about it abstractly.">
+  <div class="section-tag fade-in">06 / 12 · Live Demo</div>
+  <h2 class="fade-in">Let's Watch It<br>Work — Right Now</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">The best way to understand AI is to see it produce something real in front of you. Here are the exact prompts to run live — takes under 5 minutes total.</p>
+
+  <div class="demo-block fade-in">
+    <span class="demo-label">◆ Live Demo Prompt 01 — Listing Description</span>
+    <div class="demo-prompt">
+      <span>"Write a compelling listing description for a 4-bedroom, 2.5-bath home in Santa Clarita, California. Built in 2003, 2,100 square feet, open kitchen, hardwood floors, mountain views, cul-de-sac street. Tone: warm and professional. Target buyer: move-up family. Length: 150 words max."</span>
+    </div>
+    <p style="font-size:13px; color:#888; margin:0;">→ Output in 8–12 seconds. Have the audience score it 1–10. Then ask: how long would that have taken you to write?</p>
+  </div>
+
+  <div class="demo-block fade-in">
+    <span class="demo-label">◆ Live Demo Prompt 02 — Follow-Up Email</span>
+    <div class="demo-prompt">
+      <span>"Write a 90-day follow-up email to a past client from my perspective as their real estate agent. The client bought their first home with me. Keep it warm, personal, not salesy. Remind them I'm here when they're ready to move up. Sign off as Connor MacIvor, ConnorWithHonor.com."</span>
+    </div>
+    <p style="font-size:13px; color:#888; margin:0;">→ Read the output aloud. Ask: 'Would you send this? What would you change?' Two edits max — then it's ready to send. That's the process.</p>
+  </div>
+
+  <div class="demo-block fade-in">
+    <span class="demo-label">◆ Live Demo Prompt 03 — Audience Participation</span>
+    <div class="demo-prompt">
+      <span>Ask someone in the room: "Give me a real property — address, beds, baths, one feature you love about it." Then build the prompt live on screen and run it. Output in front of the whole room.</span>
+    </div>
+    <p style="font-size:13px; color:#888; margin:0;">→ This is the moment the room goes from skeptical to sold. Real data, real output, real time.</p>
+  </div>
+  <div class="section-num">06</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 07 PITFALLS -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="warning"
+  data-notes="[35:00–39:00] Don't sugarcoat this. The pitfalls are real and agents need to hear them from someone who's actually in the field. On 'Trusting Output Blindly' — share a real example of AI getting a fact wrong. MLS data, square footage, school district. 'AI is confident and wrong the same way a rookie agent is confident and wrong. You're the professional. You're the license holder. You verify.' On 'Doing Nothing' — this is where you land the urgency. 'I've watched agents wait out every shift in tech. Some of them are still waiting. The market doesn't wait.'">
+  <div class="section-tag fade-in">07 / 12 · What to Avoid</div>
+  <h2 class="fade-in">Where Agents Go<br>Wrong With AI</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">Most AI failures in real estate aren't the AI's fault. They're process failures. Here's exactly where agents go wrong — and how to avoid it.</p>
+
+  <div class="warn-cards fade-in">
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>Using It As A Replacement</h3>
+      <p>AI that replaces your personality, relationships, or local expertise will hurt you. Clients hire you — not a bot. AI works behind the scenes. You remain the front.</p>
+    </div>
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>Trusting Output Blindly</h3>
+      <p>AI can be confidently wrong. Never post a listing description, CMA, or client-facing document without reading it yourself. Your license is on the line — not the AI's.</p>
+    </div>
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>Chasing Every Shiny Tool</h3>
+      <p>500 AI tools are marketed to agents right now. Most overlap. Start with one system that solves your single biggest pain point. Complexity only after that one thing works.</p>
+    </div>
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>Doing Absolutely Nothing</h3>
+      <p>The biggest mistake. Agents building AI habits right now are building a lead that becomes very difficult to close in 12 months. Waiting has a real, compounding cost.</p>
+    </div>
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>Using Generic Prompts</h3>
+      <p>Vague prompts produce vague output. "Write me a listing description" gives you garbage. Specific prompts — beds, baths, tone, buyer profile, word count — give you gold.</p>
+    </div>
+    <div class="warn-card">
+      <span class="warn-icon">⚠</span>
+      <h3>No Review Before Sending</h3>
+      <p>AI is your first draft — not your final answer. Read everything before it reaches a client. One wrong fact in an AI-generated email can damage a relationship you've spent years building.</p>
+    </div>
+  </div>
+  <div class="section-num">07</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 08 BEST PRACTICES -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="good"
+  data-notes="[39:00–43:00] Flip the energy. We just talked about what not to do — now let's talk about what right looks like. Walk through each card. Emphasize 'amplify, not replace' — this is the one concept that changes how people think about AI. The best agents using AI right now sound MORE like themselves, not less. They're faster, not different. On 'Pick One System' — help the room make a decision: 'If you're spending more time on content than anything else, start with ChatGPT. If you're missing after-hours calls, start with a voice assistant. If you have a dead database, start with CRM automation. Pick the one that matches your pain.'">
+  <div class="section-tag fade-in">08 / 12 · Best Practices</div>
+  <h2 class="fade-in">What Good<br>Looks Like</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">The agents winning with AI right now are following a simple framework. It's not complicated — it's consistent.</p>
+
+  <div class="good-cards fade-in">
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Start With Your Biggest Time Drain</h3>
+      <p>What takes the most time that doesn't require your direct judgment? That's your first AI use case. For most agents: follow-up, content, or answering the same questions over and over.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Amplify You — Don't Replace You</h3>
+      <p>Your voice. Your market knowledge. Your relationships. AI makes those go further. The best agents using AI right now sound MORE like themselves, not less.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Pick One System and Learn It</h3>
+      <p>ChatGPT for content. AI voice for lead capture. Automated CRM for follow-up. Pick one. Give it 30 days. Measure the result. Add the next one only after the first one works.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Always Review Before Sending</h3>
+      <p>AI is your first draft — never your final answer. Read everything before it reaches a client. Your reputation is on the line every single time.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Build Better Prompts Over Time</h3>
+      <p>Save prompts that work. Build a personal prompt library. Over 30 days, your AI output gets dramatically better — because you've learned how to talk to it.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon">▶</span>
+      <h3>Measure Time Saved Weekly</h3>
+      <p>Track one number: hours saved per week. Start at zero. After 30 days using AI for content, follow-up, and research — most agents report 5–8 hours recovered per week.</p>
+    </div>
+  </div>
+  <div class="section-num">08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 09 DAY IN THE LIFE -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="example"
+  data-notes="[43:00–46:00] Walk through this timeline like a story. Not a list — a narrative. 'It's 7am. Your listing just went live. You're making coffee.' Walk through each moment. Let the room visualize themselves in this scenario. The goal isn't to sell AI — it's to help them see a version of their own day where the admin disappears. At 6pm — 'The agent didn't work harder today. She worked on fewer things. Everything that didn't require her judgment — AI handled it.'">
+  <div class="section-tag fade-in">09 / 12 · Real World Application</div>
+  <h2 class="fade-in">What A Single AI System<br>Does In One Day</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">This isn't hypothetical. This is a real workflow running for agents today. Walk through this day and ask yourself: how many of these hours are you reclaiming?</p>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-time">7:00 AM</div>
+      <div class="tl-body">
+        <h3>Listing Goes Live</h3>
+        <p>AI drafts social posts, email blast, and neighborhood announcement automatically. Agent reviews, approves, posts — total time: 8 minutes instead of 45.</p>
+        <span class="tl-chip">Content AI</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">9:15 AM</div>
+      <div class="tl-body">
+        <h3>Agent Writes a Follow-Up Email</h3>
+        <p>Instead of staring at a blank screen for 20 minutes, agent types a 2-sentence brief to ChatGPT. Full personalized email: ready in 45 seconds. Edited and sent in 3 minutes.</p>
+        <span class="tl-chip">Content AI</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">10:22 AM</div>
+      <div class="tl-body">
+        <h3>Inbound Call — Agent Is In A Showing</h3>
+        <p>AI voice assistant picks up. Qualifies the caller, captures contact info, answers listing questions, books a showing on the agent's calendar. Agent never misses a beat.</p>
+        <span class="tl-chip">AI Voice</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">2:00 PM</div>
+      <div class="tl-body">
+        <h3>CRM Triggers 90-Day Check-Ins</h3>
+        <p>Personalized message in the agent's voice goes to 12 past clients automatically. Three reply. One is ready to list in the spring. Agent didn't touch a keyboard.</p>
+        <span class="tl-chip">Automated Follow-Up</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">6:00 PM</div>
+      <div class="tl-body">
+        <h3>Seller Presentation — Tomorrow Morning</h3>
+        <p>AI pulls market data, drafts the narrative, formats the talking points. Agent reviews in 10 minutes. Presentation is ready. Day done.</p>
+        <span class="tl-chip">Research AI</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-num">09</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 10 ACTION PLAN -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="start"
+  data-notes="[46:00–48:00] The most important 2 minutes of the class. Make this tactical and immediate. 'Before you leave this room today, I want one thing from you: open your phone, go to ChatGPT.com, and type a prompt. Right now. Not tonight. Right now.' If people are on phones during this — good. That IS the homework. The three-step plan is their roadmap. Step 1 costs nothing and takes 20 minutes. Step 2 costs one hour. Step 3 changes their business. Don't let them leave without committing to Step 1 out loud.">
+  <div class="section-tag fade-in">10 / 12 · Your Action Plan</div>
+  <h2 class="fade-in">Where To Start —<br>Simple, No Overwhelm</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">Three steps. No overwhelm. No expensive tools required to start. This week, this month, this quarter — in that order.</p>
+
+  <div class="steps fade-in">
+    <div class="step">
+      <span class="step-label">Step One</span>
+      <h3>This Week</h3>
+      <p>Open ChatGPT. Ask it to write one listing description or one follow-up email in your voice. Read it. Edit it. See how much time you saved. That's your first rep. Do it before you leave today.</p>
+      <span class="step-time">Time: 20 Minutes</span>
+    </div>
+    <div class="step">
+      <span class="step-label">Step Two</span>
+      <h3>This Month</h3>
+      <p>Identify your single biggest time drain. Is it follow-up? Content? Answering the same questions? Find one AI tool that solves that one problem. Use it daily for 30 days before adding anything else.</p>
+      <span class="step-time">Time: 1 Hour Setup</span>
+    </div>
+    <div class="step">
+      <span class="step-label">Step Three</span>
+      <h3>This Quarter</h3>
+      <p>Build your system. AI voice for lead capture. Automated follow-up for your database. Content workflow for your marketing. Three tools working together — that's when your business changes.</p>
+      <span class="step-time">Time: Ongoing</span>
+    </div>
+  </div>
+
+  <div class="quiz-block fade-in" style="margin-top:36px;">
+    <span class="quiz-label">◆ Commitment Moment — Before You Leave</span>
+    <div class="quiz-q">Which step are you committing to this week?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt">Write a listing description with ChatGPT</div>
+      <div class="quiz-opt">Write a follow-up email with ChatGPT</div>
+      <div class="quiz-opt">Research one AI CRM tool</div>
+      <div class="quiz-opt">All three — I'm in</div>
+    </div>
+  </div>
+  <div class="section-num">10</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 11 Q&A -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="qa"
+  data-notes="[48:00–50:00] Open the floor. Two minutes minimum. If no hands go up immediately: 'Let me tell you the question I get most — Is AI going to replace agents?' Answer: 'No. AI is going to replace agents who refuse to use AI. The agent who uses AI will replace the ones who don't.' Other common questions: 'What does it cost to start?' (Free. ChatGPT free tier.) 'Is it safe to use client data?' (Use general prompts — never paste private client info into a public AI tool.) 'Which is better, ChatGPT or Claude?' (Both are excellent for content. Try both free for a week — then pick one and stick with it.) Close strong: 'You came in here with a question. You're leaving with an answer and a plan. The only thing left is execution.'">
+  <div class="section-tag fade-in">11 / 12 · Open Q&amp;A</div>
+  <h2 class="fade-in">Your Questions —<br>Straight Answers</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">Two minutes. Real questions, no spin. Here are the ones that come up every time — plus the floor is yours.</p>
+
+  <div class="good-cards fade-in">
+    <div class="good-card">
+      <span class="good-icon" style="color:var(--gold)">Q</span>
+      <h3>Will AI replace real estate agents?</h3>
+      <p>No. AI will replace agents who refuse to use AI. The agent who uses AI will replace the ones who don't. That's the honest answer.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon" style="color:var(--gold)">Q</span>
+      <h3>What does it cost to start?</h3>
+      <p>Zero. ChatGPT's free tier is enough to get your first 30 days of results. Paid tools come later — after you've proven the habit works for you.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon" style="color:var(--gold)">Q</span>
+      <h3>Is it safe to use client data?</h3>
+      <p>Use general prompts. Never paste private client data — names, addresses, financials — into a public AI tool. Keep prompts about the property and the situation, not the person.</p>
+    </div>
+    <div class="good-card">
+      <span class="good-icon" style="color:var(--gold)">Q</span>
+      <h3>ChatGPT or Claude — which is better?</h3>
+      <p>Both are excellent for real estate content. Try both on the free tier for one week. Then pick one and build the habit. Switching tools constantly is the enemy of progress.</p>
+    </div>
+  </div>
+  <div class="section-num">11</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 12 CLOSE -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="close"
+  data-notes="[50:00] Final 60 seconds. 'You came in here with a question. You're leaving with an answer and a plan. Everything else is execution.' Drop into the authentic close: no pitch, no pressure. Anyone who wants to keep talking — I'm here. Cards on the table. If you want to see what a full AI system looks like built specifically for your real estate business — go to HonorElevate.com and book a 20-minute call. That's it. Thank you.">
+  <div class="section-tag fade-in">12 / 12 · Thank You</div>
+  <h2 class="fade-in">Questions?<br>Let's Talk.</h2>
+  <div class="divider fade-in"></div>
+  <p class="fade-in">If anything today sparked a question about how AI could work in your specific business — I'm genuinely happy to talk it through. No pitch. No pressure. Just a straight conversation about what would actually make sense for you.</p>
+
+  <div class="contact-grid fade-in">
+    <div class="contact-card">
+      <span class="label">Web</span>
+      <a href="https://connorwithhonor.com" target="_blank">ConnorWithHonor.com</a>
+    </div>
+    <div class="contact-card">
+      <span class="label">Phone</span>
+      <span>661-400-1720</span>
+    </div>
+    <div class="contact-card">
+      <span class="label">AI Systems</span>
+      <a href="https://honorelevate.com" target="_blank">HonorElevate.com</a>
+    </div>
+    <div class="contact-card">
+      <span class="label">AI Consulting</span>
+      <a href="https://santaclaritaartificialintelligence.com" target="_blank">SantaClaritaAI.com</a>
+    </div>
+  </div>
+
+  <div class="hero-badges fade-in" style="margin-top:32px;">
+    <span class="badge cyan">Connor MacIvor — AI Growth Architect</span>
+    <span class="badge">27 Yrs Santa Clarita Real Estate</span>
+    <span class="badge">23 Yrs LAPD</span>
+    <span class="badge gold">CA DRE #01238257</span>
+  </div>
+
+  <div class="footer-byline fade-in">
+    Coded by Connor with Honor | AI Growth Architect · <a href="https://honorelevate.com" target="_blank">honorelevate.com</a>
+  </div>
+  <div class="section-num">12</div>
+</section>
+
+<script>
+  // ── NOTES TOGGLE ──
+  const toggle = document.getElementById('notesToggle');
+  const panel = document.getElementById('notesPanel');
+  const notesText = document.getElementById('notesText');
+  let notesVisible = false;
+
+  toggle.addEventListener('click', () => {
+    notesVisible = !notesVisible;
+    panel.classList.toggle('visible', notesVisible);
+    toggle.classList.toggle('active', notesVisible);
+    toggle.textContent = notesVisible ? 'NOTES ◆ ON' : 'NOTES ◆ OFF';
+  });
+
+  // ── SCROLL SPY FOR NOTES ──
+  const sections = document.querySelectorAll('section[data-notes]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > 0.3) {
+        notesText.textContent = e.target.dataset.notes;
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+
+  // ── FADE IN ──
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        fadeObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => fadeObserver.observe(el));
+
+  // ── QUIZ OPTS ──
+  document.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      opt.closest('.quiz-opts').querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+</script>
+</body>
+</html>
